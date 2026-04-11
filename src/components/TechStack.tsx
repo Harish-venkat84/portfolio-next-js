@@ -18,7 +18,7 @@ export default function TechStack() {
             stiffness: 200,
           }}
           whileHover={{ scale: 1.2, y: -4 }}
-          className="group relative flex items-center justify-center w-12 h-12 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm transition-colors hover:border-[var(--accent)]/50 hover:bg-white/10"
+          className="my-4 group relative flex items-center justify-center w-12 h-12 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm transition-colors hover:border-[var(--accent)]/50 hover:bg-white/10"
           title={tech.name}
         >
           <tech.icon className="text-xl" style={{ color: tech.color }} />
