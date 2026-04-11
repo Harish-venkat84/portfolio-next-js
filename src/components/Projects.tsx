@@ -130,7 +130,7 @@ export default function Projects() {
                 system-architecture.txt
               </span>
             </div>
-            <div className="px-5 py-6 font-mono text-xs sm:text-sm leading-6 text-gray-400 overflow-x-auto">
+            {/* <div className="px-5 py-6 font-mono text-xs sm:text-sm leading-6 text-gray-400 overflow-x-auto">
               <pre className="text-center sm:text-left">{`
  ┌─────────────────────────────────────────────────────────────┐
  │                     CLIENT LAYER                            │
@@ -167,7 +167,7 @@ export default function Projects() {
  │         │ (Primary)│              │ (Cache)  │              │
  │         └──────────┘              └──────────┘              │
  └─────────────────────────────────────────────────────────────┘`}</pre>
-            </div>
+            </div> */}
           </div>
         </motion.div>
       </div>
