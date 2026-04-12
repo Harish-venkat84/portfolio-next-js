@@ -73,3 +73,8 @@ section + section {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(108, 99, 255, 0.5);
 }
+
+/* Prevent scroll during loading */
+body.loading {
+  overflow: hidden;
+}

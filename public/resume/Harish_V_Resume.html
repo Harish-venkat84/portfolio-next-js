@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Harish V - Full Stack Developer</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      @page {
+        size: A4;
+        margin: 0.45in 0.55in;
+      }
+
+      body {
+        font-family: Calibri, "Segoe UI", Arial, sans-serif;
+        font-size: 10.5pt;
+        line-height: 1.4;
+        color: #1a1a1a;
+        background: #fff;
+        max-width: 8.5in;
+        margin: 0 auto;
+        padding: 0.45in 0.55in;
+      }
+
+      a {
+        color: #1a1a1a;
+        text-decoration: none;
+      }
+
+      /* ── Header ── */
+      .header {
+        text-align: center;
+        padding-bottom: 8pt;
+        border-bottom: 2pt solid #222;
+        margin-bottom: 10pt;
+      }
+      .header h1 {
+        font-size: 22pt;
+        font-weight: 700;
+        letter-spacing: 1.5pt;
+        margin-bottom: 3pt;
+      }
+      .header .subtitle {
+        font-size: 11.5pt;
+        font-weight: 600;
+        color: #444;
+        margin-bottom: 5pt;
+      }
+      .header .contact {
+        font-size: 9.5pt;
+        color: #555;
+        line-height: 1.6;
+      }
+      .header .contact .sep {
+        margin: 0 5pt;
+        color: #bbb;
+      }
+
+      /* ── Section ── */
+      .section {
+        margin-bottom: 10pt;
+      }
+      .section-title {
+        font-size: 11pt;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5pt;
+        border-bottom: 1pt solid #ccc;
+        padding-bottom: 2pt;
+        margin-bottom: 6pt;
+      }
+
+      /* ── Summary ── */
+      .summary {
+        font-size: 10.5pt;
+        color: #222;
+        line-height: 1.5;
+      }
+
+      /* ── Skills ── */
+      .skills-row {
+        margin-bottom: 2pt;
+        font-size: 10pt;
+      }
+      .skills-row .label {
+        font-weight: 700;
+        color: #222;
+      }
+      .skills-row .value {
+        color: #333;
+      }
+
+      /* ── Experience ── */
+      .job-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 1pt;
+      }
+      .job-title {
+        font-size: 11pt;
+        font-weight: 700;
+      }
+      .job-date {
+        font-size: 9.5pt;
+        color: #555;
+      }
+      .job-company {
+        font-size: 10.5pt;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 1pt;
+      }
+      .job-project {
+        font-size: 10pt;
+        font-style: italic;
+        color: #444;
+        margin-bottom: 5pt;
+      }
+
+      .cat {
+        font-size: 10pt;
+        font-weight: 700;
+        color: #222;
+        margin-top: 6pt;
+        margin-bottom: 2pt;
+      }
+
+      ul {
+        padding-left: 15pt;
+        margin-bottom: 1pt;
+      }
+      li {
+        font-size: 10pt;
+        color: #222;
+        margin-bottom: 1.5pt;
+        line-height: 1.4;
+      }
+      li strong {
+        font-weight: 700;
+      }
+
+      /* ── Project ── */
+      .project-stack {
+        font-size: 9.5pt;
+        color: #444;
+        margin-bottom: 4pt;
+      }
+
+      /* ── Education / Certs ── */
+      .edu-degree {
+        font-weight: 600;
+        font-size: 10.5pt;
+      }
+      .edu-school {
+        font-size: 10pt;
+        color: #555;
+      }
+
+      @media print {
+        body {
+          padding: 0;
+        }
+        .section {
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ════════════════════ HEADER ════════════════════ -->
+    <div class="header">
+      <h1>HARISH V</h1>
+      <div class="subtitle">Full Stack Developer</div>
+      <div class="contact">
+        harish.venkatesan23@gmail.com<span class="sep">|</span>8807889553<span
+          class="sep"
+          >|</span
+        ><a href="https://www.linkedin.com/in/harish-software-engineer/"
+          >linkedin.com/in/harish-software-engineer</a
+        ><span class="sep">|</span
+        ><a href="https://github.com/Harish-venkat84"
+          >github.com/Harish-venkat84</a
+        >
+      </div>
+    </div>
+
+    <!-- ════════════════════ SUMMARY ════════════════════ -->
+    <div class="section">
+      <div class="section-title">Professional Summary</div>
+      <p class="summary">
+        Full Stack Developer with 2+ years of hands-on experience building a
+        production-grade cryptocurrency exchange platform. Architected 19 NestJS
+        microservices processing real-time trading data across spot and futures
+        markets. Designed and delivered FIFO matching engines, liquidation
+        systems, and 10 WebSocket gateways handling 10,000+ concurrent
+        connections. Built 3 Next.js frontend applications and integrated live
+        market data from 6+ crypto exchanges using Protobuf-encoded feeds. Core
+        expertise in TypeScript, NestJS, Next.js, MongoDB, Redis, and
+        distributed systems architecture.
+      </p>
+    </div>
+
+    <!-- ════════════════════ SKILLS ════════════════════ -->
+    <div class="section">
+      <div class="section-title">Technical Skills</div>
+      <div class="skills-row">
+        <span class="label">Languages: </span
+        ><span class="value">TypeScript, JavaScript (ES6+), HTML5, CSS3</span>
+      </div>
+      <div class="skills-row">
+        <span class="label">Frontend: </span
+        ><span class="value"
+          >Next.js, React.js, Tailwind CSS, Redux, Framer Motion, React Hook
+          Form, i18n</span
+        >
+      </div>
+      <div class="skills-row">
+        <span class="label">Backend: </span
+        ><span class="value"
+          >NestJS, Node.js, Express.js, REST APIs, Microservices Architecture,
+          TCP Transport</span
+        >
+      </div>
+      <div class="skills-row">
+        <span class="label">Databases: </span
+        ><span class="value"
+          >MongoDB, Mongoose ODM, Redis (Caching, Pub/Sub, Streams),
+          InfluxDB</span
+        >
+      </div>
+      <div class="skills-row">
+        <span class="label">Real-Time: </span
+        ><span class="value"
+          >Socket.IO, WebSocket, Redis Adapter, BullMQ (Job Queues), Kafka</span
+        >
+      </div>
+      <div class="skills-row">
+        <span class="label">DevOps &amp; Tools: </span
+        ><span class="value"
+          >Docker, PM2 (Cluster Mode), Jenkins CI/CD, Git, Linux, Nginx</span
+        >
+      </div>
+      <div class="skills-row">
+        <span class="label">Architecture: </span
+        ><span class="value"
+          >Microservices, CQRS, Event-Driven Architecture, EventStoreDB, FIFO
+          Matching Engine</span
+        >
+      </div>
+      <div class="skills-row">
+        <span class="label">Auth &amp; Security: </span
+        ><span class="value"
+          >PassportJS (JWT, Local Strategy), bcrypt, RBAC, Rate Limiting
+          (Throttler), Helmet</span
+        >
+      </div>
+      <div class="skills-row">
+        <span class="label">Protocols: </span
+        ><span class="value">Protobuf, REST, WebSocket, TCP</span>
+      </div>
+      <div class="skills-row">
+        <span class="label">Other: </span
+        ><span class="value"
+          >TradingView Charts, OHLC Processing, Puppeteer, Stripe, AWS SDK,
+          Firebase, Twilio, Expo (React Native)</span
+        >
+      </div>
+    </div>
+
+    <!-- ════════════════════ EXPERIENCE ════════════════════ -->
+    <div class="section">
+      <div class="section-title">Professional Experience</div>
+
+      <div class="job-line">
+        <span class="job-title">Software Engineer</span>
+        <span class="job-date">Nov 2023 &ndash; Present</span>
+      </div>
+      <div class="job-company">PiBase Solutions Private Limited</div>
+      <div class="job-project">
+        Project: UNICOIN-DCX Cryptocurrency Exchange Platform &mdash; A
+        production crypto exchange with 3 frontend apps, 19 NestJS
+        microservices, 3 API gateways, and real-time market data infrastructure.
+      </div>
+
+      <div class="cat">Futures &amp; Spot Trading Engine</div>
+      <ul>
+        <li>
+          Built the complete <strong>futures trading module</strong> with limit,
+          market, stop-limit, and stop-market order types across 50+ trading
+          pairs with sub-second execution latency
+        </li>
+        <li>
+          Implemented <strong>FIFO matching engine</strong> for deterministic
+          order execution using dedicated BullMQ job processors for matching and
+          settlement workflows
+        </li>
+        <li>
+          Developed <strong>liquidation engine</strong> with Binance-compatible
+          liquidation price formula supporting both isolated and cross-margin
+          modes with real-time margin monitoring
+        </li>
+        <li>
+          Built TP/SL automation, funding fee calculations, and position
+          management with real-time PnL tracking and leverage up to 125x
+        </li>
+        <li>
+          Developed spot trading system with limit, market, and maker-market
+          orders, bulk cancellation, and presale ICO functionality
+        </li>
+      </ul>
+
+      <div class="cat">Real-Time WebSocket Infrastructure</div>
+      <ul>
+        <li>
+          Designed <strong>10 WebSocket gateways</strong> (spot public/private,
+          futures public/private, forex, feeder, presence, support chat, live
+          agent, bot gateway) handling
+          <strong>10,000+ concurrent connections</strong>
+        </li>
+        <li>
+          Implemented <strong>Redis-backed Socket.IO adapter</strong> for
+          horizontal scaling with 99.9% message delivery reliability across
+          server instances
+        </li>
+        <li>
+          Built real-time order book updates, ticker streams, candlestick feeds,
+          and trade execution broadcasts for spot and futures markets
+        </li>
+      </ul>
+
+      <div class="cat">Market Data &amp; Exchange Integration</div>
+      <ul>
+        <li>
+          Integrated live price feeds from
+          <strong>6+ exchanges</strong> (Binance, MEXC, Bybit, Kraken, KuCoin,
+          OKX) for spot and futures data aggregation
+        </li>
+        <li>
+          Implemented <strong>Protobuf binary message parsing</strong> for MEXC
+          WebSocket feeds, reducing payload size by 60% compared to JSON
+        </li>
+        <li>
+          Built OHLC candlestick pipeline with TradingView-compatible charting
+          APIs across configurable timeframes (1m to 1M)
+        </li>
+        <li>
+          Integrated Pyth Network oracle for decentralized crypto price feeds
+          and forex integration for fiat currency pricing
+        </li>
+      </ul>
+
+      <div class="cat">Frontend Applications (Next.js)</div>
+      <ul>
+        <li>
+          Built <strong>Admin Dashboard</strong> for exchange configuration,
+          symbol management, KYC verification workflows, and real-time platform
+          monitoring
+        </li>
+        <li>
+          Developed <strong>CRM Application</strong> with live agent chat via
+          WebSocket, dispute resolution, campaign management, and support ticket
+          workflows
+        </li>
+        <li>
+          Contributed to <strong>Trader Application</strong> with live order
+          book, trade execution panels, portfolio management, and responsive
+          trading layouts
+        </li>
+      </ul>
+
+      <div class="cat">Microservices &amp; Infrastructure</div>
+      <ul>
+        <li>
+          Architected <strong>19 NestJS microservices</strong> with TCP
+          transport and Redis pub/sub, plus 3 API gateways with JWT
+          authentication, rate limiting, and structured logging (Pino)
+        </li>
+        <li>
+          Built CQRS and event-driven patterns using
+          <strong>EventStoreDB</strong>, BullMQ job queues, and NestJS event
+          emitters for order processing and settlement
+        </li>
+        <li>
+          Developed shared libraries (<strong>@pix/common-nest-js</strong>,
+          <strong>@pix/common-next</strong>) for code reuse across backend
+          services and frontend apps
+        </li>
+        <li>
+          Implemented <strong>Redis caching</strong> reducing database query
+          load by 40% and parallel database operations cutting latency by 30-50%
+        </li>
+        <li>
+          Designed multi-channel <strong>notification system</strong> (email via
+          Nodemailer, SMS via Twilio, push via Firebase) with Handlebars
+          templates and BullMQ async processing
+        </li>
+        <li>
+          Built <strong>mobile alert app</strong> (Expo React Native) with
+          real-time WebSocket dashboard, push notifications, and Telegram bot
+          integration for system monitoring
+        </li>
+        <li>
+          Configured Docker containerization, PM2 cluster mode for zero-downtime
+          deploys, and Jenkins CI/CD pipelines
+        </li>
+      </ul>
+    </div>
+
+    <!-- ════════════════════ KEY PROJECT ════════════════════ -->
+    <div class="section">
+      <div class="section-title">Key Project</div>
+      <div class="job-title">UNICOIN-DCX Cryptocurrency Exchange Platform</div>
+      <div class="project-stack">
+        NestJS &bull; Next.js &bull; TypeScript &bull; MongoDB &bull; Redis
+        &bull; Socket.IO &bull; Docker &bull; PM2 &bull; Jenkins &bull; Protobuf
+        &bull; BullMQ &bull; EventStoreDB &bull; Kafka
+      </div>
+      <ul>
+        <li>
+          Full cryptocurrency exchange supporting spot and futures trading with
+          leverage up to 125x
+        </li>
+        <li>
+          19 independently deployable microservices communicating via HTTP and
+          Redis pub/sub
+        </li>
+        <li>
+          3 frontend applications: Trader (trading UI), Admin (configuration
+          &amp; monitoring), CRM (back office &amp; support)
+        </li>
+        <li>
+          3 API gateways with JWT auth, role-based access control, request
+          throttling, and structured logging
+        </li>
+        <li>
+          Live market data aggregation from 6+ crypto exchanges with Protobuf
+          binary encoding
+        </li>
+        <li>
+          Secure wallet system with FIFO cost-basis tracking and multi-currency
+          support
+        </li>
+        <li>
+          Multi-channel notification pipeline (email, SMS, push) with async
+          BullMQ processing
+        </li>
+        <li>
+          Mobile alert app (Expo React Native) with WebSocket dashboard and
+          Telegram bot for system alerts
+        </li>
+      </ul>
+    </div>
+
+    <!-- ════════════════════ CERTIFICATIONS ════════════════════ -->
+    <div class="section">
+      <div class="section-title">Certifications</div>
+      <p style="font-size: 10pt; color: #444">
+        <a
+          href="https://www.linkedin.com/in/harish-software-engineer/details/certifications/"
+          >View certifications on LinkedIn</a
+        >
+      </p>
+    </div>
+
+    <!-- ════════════════════ EDUCATION ════════════════════ -->
+    <div class="section">
+      <div class="section-title">Education</div>
+      <!-- ✏️ Fill in your education details below -->
+      <div class="edu-degree">Bachelor of Technology in Computer Science</div>
+      <div class="edu-school">Your University Name &mdash; Graduation Year</div>
+    </div>
+  </body>
+</html>
