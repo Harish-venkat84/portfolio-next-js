@@ -1,176 +1,123 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { PROJECTS } from "@/lib/constants";
-import type { Project } from "@/lib/constants";
+import { useCallback, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { FiArrowUpRight } from "react-icons/fi";
+import { PROJECTS, type Project } from "@/lib/constants";
+import SectionHeading from "./SectionHeading";
+import ProjectSheet from "./ProjectSheet";
+import { PrivateTag, InlineCode } from "./bits";
 
-function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+const LAYOUT: Record<string, string> = {
+  hush: "md:col-span-2 lg:col-span-2 lg:row-span-2",
+  bahi: "md:col-span-2 lg:col-span-2",
+  xau: "lg:col-span-1",
+  portfolio: "lg:col-span-1",
+};
 
+function trackGlow(e: React.PointerEvent<HTMLElement>) {
+  const el = e.currentTarget;
+  const rect = el.getBoundingClientRect();
+  el.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+  el.style.setProperty("--my", `${e.clientY - rect.top}px`);
+}
+
+function Card({ project, big, onOpen }: { project: Project; big: boolean; onOpen: () => void }) {
+  const Icon = project.icon;
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 60 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="group relative"
+    <motion.button
+      layoutId={`card-${project.id}`}
+      onClick={onOpen}
+      onPointerMove={trackGlow}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className={`panel glow-card group flex h-full flex-col p-6 text-left sm:p-7 ${LAYOUT[project.id]}`}
+      style={{ "--glow": project.accent } as React.CSSProperties}
+      aria-label={`${project.name}: open details`}
     >
-      <div className="relative p-6 sm:p-8 rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm overflow-hidden transition-all duration-500 hover:border-white/20 hover:bg-white/[0.04] hover:shadow-[0_0_40px_rgba(108,99,255,0.08)]">
-        {/* Gradient accent on hover */}
-        <div
-          className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-        />
+      <div className="flex items-start justify-between gap-4">
+        <span
+          className="flex h-11 w-11 items-center justify-center rounded-lg text-xl"
+          style={{ background: `${project.accent}1a`, color: project.accent }}
+        >
+          <Icon aria-hidden />
+        </span>
+        <PrivateTag />
+      </div>
 
-        {/* Header */}
-        <div className="flex items-start justify-between mb-4">
-          <div
-            className={`p-3 rounded-xl bg-gradient-to-br ${project.gradient} bg-opacity-10`}
-            style={{
-              background: `linear-gradient(135deg, rgba(108,99,255,0.1), rgba(59,130,246,0.05))`,
-            }}
-          >
-            <project.icon
-              className={`text-2xl`}
-              style={{ color: "var(--accent)" }}
-            />
-          </div>
-        </div>
+      <h3 className={`mt-5 font-semibold tracking-tight ${big ? "text-3xl sm:text-4xl" : "text-2xl"}`}>
+        {project.name}
+        {project.tag && <span className="ml-2 align-middle font-mono text-xs text-muted">({project.tag})</span>}
+      </h3>
+      <p className={`mt-2 text-muted ${big ? "text-lg" : ""}`}>{project.pitch}</p>
 
-        {/* Title & Description */}
-        <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[var(--accent)] transition-colors duration-300">
-          {project.title}
-        </h3>
-        <p className="text-gray-400 text-sm leading-relaxed mb-5">
-          {project.description}
-        </p>
-
-        {/* Highlights */}
-        <ul className="space-y-2 mb-6">
-          {project.highlights.map((highlight) => (
-            <li
-              key={highlight}
-              className="flex items-start gap-2 text-sm text-gray-500"
-            >
-              <span className="text-[var(--accent)] mt-1 shrink-0">▸</span>
-              {highlight}
+      {big && (
+        <ul className="mt-6 space-y-2.5 text-[15px] text-fg/85">
+          {project.highlights.slice(0, 4).map((h) => (
+            <li key={h} className="flex gap-3">
+              <span className="mt-0.5 text-up" aria-hidden>
+                ▲
+              </span>
+              <span>
+                <InlineCode text={h} />
+              </span>
             </li>
           ))}
         </ul>
+      )}
 
-        {/* Tech tags */}
-        <div className="flex flex-wrap gap-2">
-          {project.tech.map((tech) => (
-            <span
-              key={tech}
-              className="px-3 py-1 text-xs font-mono text-[var(--accent)] bg-[var(--accent)]/10 rounded-full border border-[var(--accent)]/20"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-      </div>
-    </motion.div>
+      {/* order-book style metadata */}
+      <dl className="mt-auto space-y-1.5 pt-6 font-mono text-xs">
+        {project.meta.map((m) => (
+          <div key={m.label} className="flex items-baseline gap-2">
+            <dt className="text-muted">{m.label}</dt>
+            <span className="flex-1 border-b border-dotted border-line-2" aria-hidden />
+            <dd className="text-fg">{m.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <span className="mt-5 inline-flex items-center gap-1.5 font-mono text-xs text-muted transition-colors group-hover:text-up">
+        details
+        <FiArrowUpRight
+          className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          aria-hidden
+        />
+      </span>
+    </motion.button>
   );
 }
 
 export default function Projects() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [openId, setOpenId] = useState<string | null>(null);
+  const open = PROJECTS.find((p) => p.id === openId) ?? null;
+  const close = useCallback(() => setOpenId(null), []);
 
   return (
-    <section id="projects" className="relative py-32 overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] rounded-full bg-purple-900/5 blur-[150px]" />
+    <section id="work" className="relative py-20 md:py-28">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionHeading
+          index="02"
+          path="side-quests"
+          title={
+            <>
+              Four products, built <span className="text-up">end to end</span>.
+            </>
+          }
+          kicker="Design, API, clients, CI/CD and self-hosting, all by me. The repos are private; I'm happy to walk through the code in an interview."
+        />
 
-      <div ref={ref} className="max-w-6xl mx-auto px-6">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-16"
-        >
-          <p className="text-[var(--accent)] font-mono text-sm mb-2">
-            02. Projects
-          </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            What I&apos;ve{" "}
-            <span className="bg-gradient-to-r from-[var(--accent)] to-purple-400 bg-clip-text text-transparent">
-              Built
-            </span>
-          </h2>
-          <p className="text-gray-400 max-w-xl text-lg">
-            A production-grade crypto exchange platform — from order matching to
-            real-time market data, wallet management to admin tools.
-          </p>
-        </motion.div>
-
-        {/* Projects grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PROJECTS.map((project, index) => (
-            <ProjectCard key={project.title} project={project} index={index} />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {PROJECTS.map((p) => (
+            <Card key={p.id} project={p} big={p.id === "hush"} onOpen={() => setOpenId(p.id)} />
           ))}
         </div>
-
-        {/* Architecture diagram */}
-        {/* <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16"
-        >
-          <div className="rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-white/[0.02]">
-              <div className="w-3 h-3 rounded-full bg-red-500/70" />
-              <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
-              <div className="w-3 h-3 rounded-full bg-green-500/70" />
-              <span className="text-xs text-gray-500 ml-2 font-mono">
-                system-architecture.txt
-              </span>
-            </div>
-            <div className="px-5 py-6 font-mono text-xs sm:text-sm leading-6 text-gray-400 overflow-x-auto">
-              <pre className="text-center sm:text-left">{`
- ┌─────────────────────────────────────────────────────────────┐
- │                     CLIENT LAYER                            │
- │   ┌──────────┐   ┌──────────┐   ┌──────────┐               │
- │   │ Trader   │   │  Admin   │   │   CRM    │               │
- │   │ Next.js  │   │ Next.js  │   │ Next.js  │               │
- │   └────┬─────┘   └────┬─────┘   └────┬─────┘               │
- └────────┼──────────────┼──────────────┼──────────────────────┘
-          │              │              │
- ┌────────▼──────────────▼──────────────▼──────────────────────┐
- │                    API GATEWAY LAYER                         │
- │   ┌──────────┐   ┌──────────┐   ┌──────────┐               │
- │   │ Gateway  │   │   IAM    │   │  Trader  │               │
- │   │  (REST)  │   │ Gateway  │   │ Gateway  │               │
- │   └────┬─────┘   └────┬─────┘   └────┬─────┘               │
- └────────┼──────────────┼──────────────┼──────────────────────┘
-          │              │              │
- ┌────────▼──────────────▼──────────────▼──────────────────────┐
- │                  MICROSERVICES LAYER                         │
- │  ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐    │
- │  │Exchange│ │ Wallet │ │  IAM   │ │ Spot   │ │Futures │    │
- │  │        │ │        │ │        │ │        │ │        │    │
- │  └────┬───┘ └────┬───┘ └────┬───┘ └────┬───┘ └────┬───┘    │
- │  ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐    │
- │  │  CQRS  │ │ Logger │ │  Cron  │ │Notific.│ │  Bot   │    │
- │  │ Events │ │        │ │        │ │        │ │Gateway │    │
- │  └────┬───┘ └────┬───┘ └────┬───┘ └────┬───┘ └────┬───┘    │
- └────────┼──────────┼──────────┼──────────┼──────────┼────────┘
-          │          │          │          │          │
- ┌────────▼──────────▼──────────▼──────────▼──────────▼────────┐
- │                    DATA LAYER                                │
- │         ┌──────────┐              ┌──────────┐              │
- │         │ MongoDB  │              │  Redis   │              │
- │         │ (Primary)│              │ (Cache)  │              │
- │         └──────────┘              └──────────┘              │
- └─────────────────────────────────────────────────────────────┘`}</pre>
-            </div>
-          </div>
-        </motion.div> */}
       </div>
+
+      <AnimatePresence>{open && <ProjectSheet project={open} onClose={close} />}</AnimatePresence>
     </section>
   );
 }

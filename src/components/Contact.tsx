@@ -1,117 +1,114 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { FiGithub, FiLinkedin, FiMail, FiArrowUpRight } from "react-icons/fi";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { FiArrowUpRight, FiCheck, FiCopy, FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
 import { PERSONAL_INFO } from "@/lib/constants";
+import SectionHeading from "./SectionHeading";
+import Reveal from "./Reveal";
 
-const contactLinks = [
-  {
-    title: "Email",
-    subtitle: PERSONAL_INFO.email,
-    href: `mailto:${PERSONAL_INFO.email}`,
-    icon: FiMail,
-    description: "Drop me a message anytime",
-  },
-  {
-    title: "GitHub",
-    subtitle: "Harish-venkat84",
-    href: PERSONAL_INFO.github,
-    icon: FiGithub,
-    description: "Check out my repositories",
-  },
-  {
-    title: "LinkedIn",
-    subtitle: "harish-software-engineer",
-    href: PERSONAL_INFO.linkedin,
-    icon: FiLinkedin,
-    description: "Let's connect professionally",
-  },
+const LINKS = [
+  { label: "GitHub", value: PERSONAL_INFO.githubHandle, href: PERSONAL_INFO.github, icon: FiGithub },
+  { label: "LinkedIn", value: PERSONAL_INFO.linkedinHandle, href: PERSONAL_INFO.linkedin, icon: FiLinkedin },
 ];
 
 export default function Contact() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return;
+    const id = setTimeout(() => setCopied(false), 1800);
+    return () => clearTimeout(id);
+  }, [copied]);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(PERSONAL_INFO.email);
+      setCopied(true);
+    } catch {
+      window.location.href = `mailto:${PERSONAL_INFO.email}`;
+    }
+  };
 
   return (
-    <section id="contact" className="relative py-32 overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full bg-[var(--accent)]/5 blur-[150px]" />
+    <section id="contact" className="relative overflow-hidden py-20 md:py-28">
+      <div
+        className="pointer-events-none absolute -bottom-40 left-1/2 h-[480px] w-[900px] -translate-x-1/2 rounded-full bg-up/10 blur-[140px]"
+        aria-hidden
+      />
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionHeading
+          index="06"
+          path="contact"
+          title="Let's build something that doesn't lose money."
+          kicker="I'm open to full-time roles. If your team works on real-time, fintech or security-heavy products, I'd love to talk."
+        />
 
-      <div ref={ref} className="max-w-6xl mx-auto px-6">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <p className="text-[var(--accent)] font-mono text-sm mb-2">
-            04. Contact
-          </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            Let&apos;s Work{" "}
-            <span className="bg-gradient-to-r from-[var(--accent)] to-purple-400 bg-clip-text text-transparent">
-              Together
-            </span>
-          </h2>
-          <p className="text-gray-400 max-w-lg mx-auto text-lg">
-            I&apos;m always open to discussing new projects, ideas, or
-            opportunities to build something great.
-          </p>
-        </motion.div>
+        <Reveal>
+          <a
+            href={`mailto:${PERSONAL_INFO.email}?subject=Let's%20talk`}
+            className="group block font-mono text-[clamp(1.6rem,6vw,4rem)] leading-tight font-semibold tracking-tight break-words"
+          >
+            <span className="text-muted">$ </span>
+            <span className="transition-colors group-hover:text-up">sudo hire harish</span>
+            <span className="caret ml-1 inline-block h-[0.85em] w-[0.45em] translate-y-[0.12em] bg-up" aria-hidden />
+          </a>
+        </Reveal>
 
-        {/* Contact cards */}
-        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {contactLinks.map((link, index) => (
-            <motion.a
-              key={link.title}
-              href={link.href}
-              target={link.title !== "Email" ? "_blank" : undefined}
-              rel={link.title !== "Email" ? "noopener noreferrer" : undefined}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-              className="group relative p-6 rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm text-center transition-all duration-300 hover:border-[var(--accent)]/30 hover:bg-white/[0.04] hover:shadow-[0_0_40px_rgba(108,99,255,0.1)] hover:-translate-y-1"
+        <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-[1.5fr_1fr_1fr]">
+          <Reveal className="panel glow-card flex items-center gap-4 p-5">
+            <FiMail className="shrink-0 text-xl text-up" aria-hidden />
+            <div className="min-w-0 flex-1">
+              <p className="font-mono text-xs text-muted">email</p>
+              <a href={`mailto:${PERSONAL_INFO.email}`} className="block truncate hover:text-up">
+                {PERSONAL_INFO.email}
+              </a>
+            </div>
+            <button
+              onClick={copyEmail}
+              className="rounded-md p-2 text-muted transition-colors hover:bg-panel-2 hover:text-fg"
+              aria-label="Copy email address"
             >
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {copied ? <FiCheck className="text-up" /> : <FiCopy />}
+            </button>
+          </Reveal>
 
-              <div className="relative z-10">
-                <div className="inline-flex p-3 rounded-xl bg-white/5 border border-white/10 mb-4 group-hover:border-[var(--accent)]/30 transition-colors">
-                  <link.icon className="text-2xl text-[var(--accent)]" />
+          {LINKS.map((l, i) => (
+            <Reveal key={l.label} delay={(i + 1) * 0.08}>
+              <a
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="panel group flex items-center gap-4 p-5 transition-colors hover:border-up/50"
+              >
+                <l.icon className="shrink-0 text-xl text-up" aria-hidden />
+                <div className="min-w-0 flex-1">
+                  <p className="font-mono text-xs text-muted">{l.label.toLowerCase()}</p>
+                  <p className="truncate">{l.value}</p>
                 </div>
-
-                <h3 className="text-lg font-bold text-white mb-1 flex items-center justify-center gap-1">
-                  {link.title}
-                  <FiArrowUpRight className="text-sm text-gray-600 group-hover:text-[var(--accent)] transition-colors" />
-                </h3>
-
-                <p className="text-sm text-gray-400 mb-2 font-mono truncate">
-                  {link.subtitle}
-                </p>
-
-                <p className="text-xs text-gray-600">{link.description}</p>
-              </div>
-            </motion.a>
+                <FiArrowUpRight
+                  className="text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-up"
+                  aria-hidden
+                />
+              </a>
+            </Reveal>
           ))}
         </div>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="text-center mt-12"
-        >
-          <a
-            href={`mailto:${PERSONAL_INFO.email}`}
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[var(--accent)] text-white font-medium transition-all hover:shadow-[0_0_40px_rgba(108,99,255,0.4)] hover:scale-105"
-          >
-            <FiMail className="text-lg" />
-            Say Hello
-          </a>
-        </motion.div>
       </div>
+
+      <AnimatePresence>
+        {copied && (
+          <motion.p
+            role="status"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-lg border border-up/40 bg-panel px-4 py-2.5 font-mono text-sm text-up shadow-xl"
+          >
+            email copied to clipboard ✓
+          </motion.p>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

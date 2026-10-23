@@ -1,41 +1,35 @@
-"use client";
-
-import { useState, useCallback } from "react";
-import { motion } from "framer-motion";
-import LoadingScreen from "@/components/LoadingScreen";
+import Providers from "@/components/Providers";
+import BootSequence from "@/components/BootSequence";
+import TickerTape from "@/components/TickerTape";
 import Navbar from "@/components/Navbar";
+import CommandPalette from "@/components/CommandPalette";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
 import Experience from "@/components/Experience";
-import Resume from "@/components/Resume";
+import Stack from "@/components/Stack";
+import Lessons from "@/components/Lessons";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  const handleLoadingComplete = useCallback(() => {
-    setIsLoading(false);
-  }, []);
-
   return (
-    <>
-      <LoadingScreen onComplete={handleLoadingComplete} />
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isLoading ? 0 : 1 }}
-        transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-      >
-        <Navbar />
+    <Providers>
+      <BootSequence />
+      <div className="grid-bg pointer-events-none fixed inset-0 -z-10" aria-hidden />
+      <TickerTape />
+      <Navbar />
+      <CommandPalette />
+      <main>
         <Hero />
         <About />
         <Projects />
         <Experience />
-        <Resume />
+        <Stack />
+        <Lessons />
         <Contact />
-        <Footer />
-      </motion.div>
-    </>
+      </main>
+      <Footer />
+    </Providers>
   );
 }

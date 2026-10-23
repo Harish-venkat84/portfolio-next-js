@@ -1,38 +1,45 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const display = Space_Grotesk({
+  variable: "--font-display",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const code = JetBrains_Mono({
+  variable: "--font-code",
   subsets: ["latin"],
 });
+
+const description =
+  "Full stack engineer building real-time systems, money-safe backends and zero-knowledge apps. Next.js, NestJS, Rust, PostgreSQL, MongoDB, Redis. Open to new roles.";
 
 export const metadata: Metadata = {
-  title: "Harish V | Full Stack Developer",
-  description:
-    "Full Stack Developer building high-performance crypto exchange platforms with 15+ microservices, NestJS, Next.js, MongoDB, Redis, and real-time WebSocket systems.",
+  title: "Harish V · Full Stack Engineer",
+  description,
   keywords: [
-    "Full Stack Developer",
-    "NestJS",
+    "Full Stack Engineer",
     "Next.js",
+    "NestJS",
+    "Rust",
     "TypeScript",
+    "PostgreSQL",
     "MongoDB",
     "Redis",
-    "Microservices",
     "WebSocket",
-    "Crypto Exchange",
+    "Microservices",
+    "Open to work",
   ],
   openGraph: {
-    title: "Harish V | Full Stack Developer",
-    description:
-      "Building high-performance trading platforms with 15+ microservices and 10,000+ concurrent WebSocket connections.",
+    title: "Harish V · Full Stack Engineer",
+    description: "I build things that move money (safely). Open to new roles.",
     type: "website",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#07080a",
 };
 
 export default function RootLayout({
@@ -41,13 +48,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
-    >
-      <body className="min-h-full flex flex-col bg-[#0a0a0a] text-white">
-        {children}
-      </body>
+    <html lang="en" className={`${display.variable} ${code.variable} antialiased`}>
+      <body className="min-h-screen bg-bg text-fg">{children}</body>
     </html>
   );
 }

@@ -1,130 +1,118 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { PERSONAL_INFO } from "@/lib/constants";
-import TypeWriter from "./TypeWriter";
-import TechStack from "./TechStack";
-import SocialLinks from "./SocialLinks";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { FiArrowDown, FiArrowUpRight } from "react-icons/fi";
+import { PERSONAL_INFO, ROLES } from "@/lib/constants";
+import { useBoot } from "./Providers";
+import ScrambleText from "./ScrambleText";
+import CandleBackdrop from "./CandleBackdrop";
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function Hero() {
+  const { booted } = useBoot();
+  const [role, setRole] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!booted) return;
+    const id = setInterval(() => setRole((r) => (r + 1) % ROLES.length), 2600);
+    return () => clearInterval(id);
+  }, [booted]);
+
+  const onPointerMove = (e: React.PointerEvent<HTMLElement>) => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--sx", `${e.clientX - rect.left}px`);
+    el.style.setProperty("--sy", `${e.clientY - rect.top}px`);
+  };
+
+  const enter = (delay: number) => ({
+    initial: { opacity: 0, y: 18 },
+    animate: booted ? { opacity: 1, y: 0 } : {},
+    transition: { duration: 0.7, delay, ease },
+  });
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-[#0a0a0a]" />
-        <div className="absolute top-1/4 -left-1/4 w-[600px] h-[600px] rounded-full bg-[var(--accent)]/8 blur-[120px] animate-float" />
-        <div className="absolute bottom-1/4 -right-1/4 w-[500px] h-[500px] rounded-full bg-blue-600/8 blur-[120px] animate-float-delayed" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-purple-900/5 blur-[150px]" />
-        {/* Grid overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
-      </div>
+    <section
+      id="top"
+      ref={sectionRef}
+      onPointerMove={onPointerMove}
+      className="relative flex min-h-[100svh] items-center overflow-hidden pt-28 pb-20"
+    >
+      {/* cursor spotlight */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(520px circle at var(--sx, 70%) var(--sy, 30%), rgba(61,255,154,0.08), transparent 60%)",
+        }}
+        aria-hidden
+      />
+      <CandleBackdrop />
 
-      <div className="max-w-6xl mx-auto px-6 py-32 w-full">
-        <div className="flex flex-col items-center sm:items-start gap-6">
-          {/* Greeting */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-gray-400 text-lg font-mono"
-          >
-            {PERSONAL_INFO.greeting}
-          </motion.p>
+      <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6">
+        <motion.p {...enter(0)} className="font-mono text-sm text-muted sm:text-base">
+          <span className="text-up">{PERSONAL_INFO.handle}@dev</span>:~$ whoami
+        </motion.p>
 
-          {/* Name */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight"
-          >
-            <span className="bg-gradient-to-r from-[var(--accent)] via-blue-400 to-purple-400 bg-clip-text text-transparent">
-              {PERSONAL_INFO.name}
-            </span>
-          </motion.h1>
+        <h1 className="mt-5 text-[clamp(3.25rem,15vw,9.5rem)] leading-[0.9] font-bold tracking-[-0.04em]">
+          <ScrambleText text="HARISH V" start={booted} />
+          <span className="text-up">.</span>
+        </h1>
 
-          {/* Typewriter */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <TypeWriter />
-          </motion.div>
-
-          {/* Tagline */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="text-gray-400 text-base sm:text-lg max-w-xl text-center sm:text-left leading-relaxed"
-          >
-            {PERSONAL_INFO.tagline}
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="flex flex-wrap gap-4 mt-2"
-          >
-            <a
-              href={PERSONAL_INFO.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative px-6 py-3 rounded-full bg-[var(--accent)] text-white font-medium text-sm transition-all hover:shadow-[0_0_30px_rgba(108,99,255,0.4)] hover:scale-105"
+        <motion.div {...enter(0.25)} className="mt-6 flex h-9 items-center gap-3 font-mono text-lg sm:text-2xl">
+          <span className="text-muted">&gt;</span>
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={ROLES[role]}
+              initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -12, filter: "blur(4px)" }}
+              transition={{ duration: 0.35 }}
             >
-              View GitHub
-            </a>
-            <a
-              href={`mailto:${PERSONAL_INFO.email}`}
-              className="px-6 py-3 rounded-full border border-white/15 text-gray-300 font-medium text-sm transition-all hover:border-[var(--accent)]/50 hover:text-white hover:bg-white/5 hover:scale-105"
-            >
-              Contact Me
-            </a>
-          </motion.div>
-
-          {/* Social Links */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-            className="mt-2"
-          >
-            <SocialLinks />
-          </motion.div>
-
-          {/* Tech Stack */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 1.0 }}
-            className="mt-8"
-          >
-            <p className="text-xs uppercase tracking-widest text-gray-500 mb-4 text-center sm:text-left">
-              Tech I work with
-            </p>
-            <TechStack />
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-5 h-8 rounded-full border-2 border-white/20 flex items-start justify-center p-1"
-        >
-          <motion.div className="w-1 h-2 rounded-full bg-white/40" />
+              {ROLES[role]}
+            </motion.span>
+          </AnimatePresence>
+          <span className="caret inline-block h-6 w-2.5 bg-up sm:h-7" aria-hidden />
         </motion.div>
-      </motion.div>
+
+        <motion.p {...enter(0.4)} className="mt-6 max-w-xl text-lg text-muted sm:text-xl">
+          I build things that move money (safely): trading engines, ledgers, real-time feeds and apps that keep
+          secrets on your device.
+        </motion.p>
+
+        <motion.div {...enter(0.55)} className="mt-10 flex flex-wrap items-center gap-4">
+          <a
+            href="#work"
+            className="group inline-flex items-center gap-2 rounded-lg bg-up px-5 py-3 font-mono text-sm font-semibold text-bg transition-transform hover:-translate-y-0.5"
+          >
+            view work
+            <FiArrowDown className="transition-transform group-hover:translate-y-0.5" aria-hidden />
+          </a>
+          <a
+            href="#contact"
+            className="group inline-flex items-center gap-2 rounded-lg border border-line-2 bg-panel px-5 py-3 font-mono text-sm transition-colors hover:border-up/60"
+          >
+            get in touch
+            <FiArrowUpRight
+              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden
+            />
+          </a>
+          <span className="inline-flex items-center gap-2.5 rounded-full border border-up/30 bg-up/5 px-4 py-2 font-mono text-xs text-up">
+            <span className="pulse-dot h-2 w-2 rounded-full bg-up" aria-hidden />
+            open to work
+          </span>
+        </motion.div>
+
+        <motion.p {...enter(0.8)} className="mt-16 hidden font-mono text-xs text-muted/70 sm:block">
+          tip: press <kbd className="rounded border border-line-2 px-1.5 py-0.5">/</kbd> or{" "}
+          <kbd className="rounded border border-line-2 px-1.5 py-0.5">⌘K</kbd> for the command palette
+        </motion.p>
+      </div>
     </section>
   );
 }
