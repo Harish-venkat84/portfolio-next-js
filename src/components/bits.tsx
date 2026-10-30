@@ -1,4 +1,5 @@
-import { FiLock } from "react-icons/fi";
+import { FiGithub, FiLock } from "react-icons/fi";
+import type { Project } from "@/lib/constants";
 
 export function PrivateTag() {
   return (
@@ -7,6 +8,29 @@ export function PrivateTag() {
       private repo
     </span>
   );
+}
+
+export function ProjectTag({ status }: { status: Project["status"] }) {
+  if (status === "live") {
+    return (
+      <span className="inline-flex items-center gap-2">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-up/30 bg-up/10 px-2.5 py-1 font-mono text-[11px] text-up">
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-up" aria-hidden />
+          live
+        </span>
+        <PrivateTag />
+      </span>
+    );
+  }
+  if (status === "open-source") {
+    return (
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-up/30 bg-up/10 px-2.5 py-1 font-mono text-[11px] text-up">
+        <FiGithub aria-hidden />
+        open source
+      </span>
+    );
+  }
+  return <PrivateTag />;
 }
 
 /** Renders `backtick` spans as inline code. */

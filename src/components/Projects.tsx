@@ -6,13 +6,14 @@ import { FiArrowUpRight } from "react-icons/fi";
 import { PROJECTS, type Project } from "@/lib/constants";
 import SectionHeading from "./SectionHeading";
 import ProjectSheet from "./ProjectSheet";
-import { PrivateTag, InlineCode } from "./bits";
+import { ProjectTag, InlineCode } from "./bits";
 
 const LAYOUT: Record<string, string> = {
-  hush: "md:col-span-2 lg:col-span-2 lg:row-span-2",
+  quietkey: "md:col-span-2 lg:col-span-2 lg:row-span-2",
   bahi: "md:col-span-2 lg:col-span-2",
   xau: "lg:col-span-1",
   portfolio: "lg:col-span-1",
+  iconstudio: "md:col-span-2 lg:col-span-4",
 };
 
 function trackGlow(e: React.PointerEvent<HTMLElement>) {
@@ -45,7 +46,7 @@ function Card({ project, big, onOpen }: { project: Project; big: boolean; onOpen
         >
           <Icon aria-hidden />
         </span>
-        <PrivateTag />
+        <ProjectTag status={project.status} />
       </div>
 
       <h3 className={`mt-5 font-semibold tracking-tight ${big ? "text-3xl sm:text-4xl" : "text-2xl"}`}>
@@ -104,15 +105,15 @@ export default function Projects() {
           path="side-quests"
           title={
             <>
-              Four products, built <span className="text-up">end to end</span>.
+              Five products, built <span className="text-up">end to end</span>.
             </>
           }
-          kicker="Design, API, clients, CI/CD and self-hosting, all by me. The repos are private; I'm happy to walk through the code in an interview."
+          kicker="Design, API, clients, CI/CD and self-hosting, all by me. Quietkey is live and Icon Studio is open source; the other repos are private, and I'm happy to walk through the code in an interview."
         />
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {PROJECTS.map((p) => (
-            <Card key={p.id} project={p} big={p.id === "hush"} onOpen={() => setOpenId(p.id)} />
+            <Card key={p.id} project={p} big={p.id === "quietkey"} onOpen={() => setOpenId(p.id)} />
           ))}
         </div>
       </div>

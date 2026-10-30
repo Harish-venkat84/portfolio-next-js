@@ -26,7 +26,7 @@ import {
   SiVitest,
   SiLinux,
 } from "react-icons/si";
-import { FiLock, FiBookOpen, FiSun, FiPieChart } from "react-icons/fi";
+import { FiLock, FiBookOpen, FiSun, FiPieChart, FiFeather } from "react-icons/fi";
 import type { IconType } from "react-icons";
 
 export const PERSONAL_INFO = {
@@ -65,8 +65,8 @@ export const TICKER: TickerItem[] = [
   { label: "WS_CONN", value: "10K+", up: true },
   { label: "SERVICES", value: "19", up: true },
   { label: "EXCHANGES", value: "6", up: true },
-  { label: "PRODUCTS_SHIPPED", value: "4", up: true },
-  { label: "TESTS", value: "190+", up: true },
+  { label: "PRODUCTS_SHIPPED", value: "5", up: true },
+  { label: "TESTS", value: "380+", up: true },
   { label: "FLOATS_FOR_MONEY", value: "0", up: false },
   { label: "PAYLOAD_SIZE", value: "-60%", up: false },
   { label: "COFFEE", value: "∞", up: true },
@@ -76,13 +76,13 @@ export const TICKER: TickerItem[] = [
 export const STATS = [
   { value: 10000, suffix: "+", label: "concurrent WebSocket connections" },
   { value: 19, suffix: "", label: "NestJS microservices in production" },
-  { value: 4, suffix: "", label: "products built end to end" },
-  { value: 190, suffix: "+", label: "tests on my password manager alone" },
+  { value: 5, suffix: "", label: "products built end to end" },
+  { value: 380, suffix: "+", label: "tests on my password manager alone" },
 ];
 
 export const BIO = [
   "I'm a full stack engineer who likes the parts of software where mistakes are expensive: matching engines, money ledgers, encryption, real-time feeds.",
-  "I spent the last few years building a production crypto exchange. Since then I've been shipping my own products end to end: web, Android and CLI clients, APIs, background workers, CI/CD and self-hosting.",
+  "I spent the last few years building a production crypto exchange. Since then I've been shipping my own products end to end: web, Android and CLI clients, APIs, background workers, CI/CD and self-hosting. One of them is live with real sign-ups.",
   "Now looking for my next team.",
 ];
 
@@ -98,7 +98,7 @@ export const WHOAMI_YAML: Token[][] = [
   [["punct", "  - "], ["str", "real-time systems"]],
   [["punct", "  - "], ["str", "backends that handle money"]],
   [["punct", "  - "], ["str", "zero-knowledge crypto"]],
-  [["key", "building"], ["punct", ": ["], ["plain", "Hush, Bahi, XAU, Portfolio"], ["punct", "]"]],
+  [["key", "building"], ["punct", ": ["], ["plain", "Quietkey, Bahi, XAU, Portfolio, Icon Studio"], ["punct", "]"]],
   [["key", "fun_fact"], ["punct", ": "], ["str", "\"Money is integer paise. Floats are not invited.\""]],
 ];
 
@@ -112,28 +112,39 @@ export interface Project {
   meta: { label: string; value: string }[];
   highlights: string[];
   tech: string[];
+  /** Omitted = private repo. */
+  status?: "live" | "open-source";
+  links?: { label: string; href: string }[];
 }
 
 export const PROJECTS: Project[] = [
   {
-    id: "hush",
-    name: "Hush",
-    pitch: "A zero-knowledge password manager. The server only ever sees ciphertext.",
+    id: "quietkey",
+    name: "Quietkey",
+    pitch: "A zero-knowledge password manager for developers. The server only ever sees ciphertext.",
     icon: FiLock,
     accent: "#3dff9a",
+    status: "live",
     meta: [
       { label: "clients", value: "web · android · cli" },
       { label: "crypto", value: "argon2id · xchacha20" },
-      { label: "tests", value: "190+" },
+      { label: "tests", value: "380+" },
     ],
     highlights: [
       "Argon2id key derivation and XChaCha20-Poly1305 via libsodium, all on the device",
       "Web app, Android app and a CLI sharing one vault",
+      "Servers, API keys and SSH keys next to logins; `qk run -- <cmd>` and `qk ssh` inject secrets as env vars",
+      "Passkeys or TOTP as a second factor, or a trusted phone's fingerprint",
+      "Teams: shared vaults, with keys handed between devices only after comparing fingerprints",
       "Android: fingerprint unlock, autofill, offline read-only copy, 2FA QR scanning",
-      "`hush ssh` and `hush run -- <cmd>` inject secrets as env vars, so no more .env files lying around",
-      "Recovery key, TOTP two-step sign-in, imports from Chrome, Bitwarden and 1Password",
+      "Recovery key, and `qk recover` opens a backup offline if the server is ever gone",
+      "Live at quietkey.in with open sign-ups, self-hosted behind a Cloudflare Tunnel",
     ],
-    tech: ["NestJS", "MongoDB", "Redis", "Next.js", "React Native", "Expo", "libsodium"],
+    tech: ["NestJS", "MongoDB", "Redis", "Next.js", "React Native", "Expo", "libsodium", "Playwright", "Cloudflare Tunnel"],
+    links: [
+      { label: "quietkey.in", href: "https://quietkey.in" },
+      { label: "open the app", href: "https://app.quietkey.in" },
+    ],
   },
   {
     id: "bahi",
@@ -171,6 +182,8 @@ export const PROJECTS: Project[] = [
       "Pulls Fed speeches and FOMC statements, macro releases, yields, the dollar and central-bank gold flows",
       "Rule-based bias for 2–6 weeks and 3–12 months, with the bull and bear case spelled out",
       "Claude rates each Fed text and must quote it word for word, or the reading is thrown out",
+      "Explains what moved the score since last week, and what each upcoming release would do to it",
+      "Scores its own track record against \"always bullish\" and \"last four weeks\" yardsticks",
       "Tracks my own chart levels and pings me on Telegram",
       "Decision support only. It never places a trade.",
     ],
@@ -188,13 +201,39 @@ export const PROJECTS: Project[] = [
       { label: "sql", value: "compile-time checked" },
     ],
     highlights: [
-      "Binance sync with reconciliation against live balances after every run",
-      "API keys with trading or withdrawal permissions are refused",
-      "Zerodha tradebook import with corporate actions",
-      "Credentials encrypted at rest (XChaCha20-Poly1305)",
+      "Binance sync reconciled against live balances; keys with trading or withdrawal rights are refused",
+      "Zerodha tradebook import with corporate actions, Kite holdings check, Tickertape sync for US stocks",
+      "Daily prices, net worth, FIFO P&L, returns against benchmarks, drawdowns and correlation",
+      "Indian tax reports: capital gains per FY, Schedule FA, Form 67 and tax-loss harvesting",
+      "Credentials encrypted at rest (XChaCha20-Poly1305), compile-time checked SQL",
       "CI builds and publishes Docker images on every push to main",
     ],
     tech: ["Rust", "axum", "sqlx", "PostgreSQL", "Next.js", "GitHub Actions"],
+  },
+  {
+    id: "iconstudio",
+    name: "Icon Studio",
+    pitch: "A self-hosted icon studio. Upload SVGs, tune them, ship a typed React and React Native package. Git is the database.",
+    icon: FiFeather,
+    accent: "#7aa2ff",
+    status: "open-source",
+    meta: [
+      { label: "targets", value: "react · react native" },
+      { label: "storage", value: "git, every save a commit" },
+      { label: "license", value: "MIT" },
+    ],
+    highlights: [
+      "Uploaded SVGs are sanitized (scripts, event handlers, foreignObject, external links) and optimized with SVGO",
+      "Live preview at any size and color; multi-color icons expose their colors as props",
+      "Generated package: one module per icon, typed props, no hooks and no `'use client'`",
+      "Releases from the UI: bump the version and CI publishes to npm and tags the commit",
+      "Writes to a local checkout, or commits through the GitHub API when it runs on a server",
+    ],
+    tech: ["Next.js", "React", "React Native", "TypeScript", "SVGO", "GitHub Actions", "npm"],
+    links: [
+      { label: "source", href: "https://github.com/Harish-venkat84/icon-studio" },
+      { label: "live demo", href: "https://icon-studio-three.vercel.app" },
+    ],
   },
 ];
 
@@ -306,7 +345,7 @@ export const LESSONS = [
 export const BOOT_LINES = [
   "> booting harish.dev v2.0",
   "> mounting /dev/harish ......... ok",
-  "> loading side-quests .......... [4/4]",
+  "> loading side-quests .......... [5/5]",
   "> checking floats for money .... none found",
   "> status: open_to_work",
 ];

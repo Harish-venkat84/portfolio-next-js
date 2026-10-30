@@ -2,9 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { FiX } from "react-icons/fi";
+import { FiArrowUpRight, FiX } from "react-icons/fi";
 import type { Project } from "@/lib/constants";
-import { InlineCode, PrivateTag } from "./bits";
+import { InlineCode, ProjectTag } from "./bits";
 
 export default function ProjectSheet({ project, onClose }: { project: Project; onClose: () => void }) {
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -58,7 +58,7 @@ export default function ProjectSheet({ project, onClose }: { project: Project; o
           >
             <Icon aria-hidden />
           </span>
-          <PrivateTag />
+          <ProjectTag status={project.status} />
         </div>
 
         <h3 id={`sheet-${project.id}`} className="mt-5 text-3xl font-semibold tracking-tight">
@@ -88,6 +88,25 @@ export default function ProjectSheet({ project, onClose }: { project: Project; o
             </motion.li>
           ))}
         </motion.ul>
+
+        {project.links && (
+          <ul className="mt-8 flex flex-wrap gap-2">
+            {project.links.map((l) => (
+              <li key={l.href}>
+                <a
+                  href={l.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 font-mono text-xs transition-colors hover:bg-panel-2"
+                  style={{ borderColor: `${project.accent}55`, color: project.accent }}
+                >
+                  {l.label}
+                  <FiArrowUpRight aria-hidden />
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
 
         <p className="mt-8 font-mono text-xs tracking-widest text-muted uppercase">stack</p>
         <ul className="mt-3 flex flex-wrap gap-2">
